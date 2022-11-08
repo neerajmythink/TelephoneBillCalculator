@@ -3,13 +3,10 @@ def readCSVfile(rawfile):
     df = pd.read_excel(rawfile,header=None)
     return df
 
-def get_most_occuerd_value(l):
+def get_most_occuerd_value(data):
     import numpy as np
-    print("Original List: ", l)
-    res = [*set(l)]
-    print("List after removing duplicate elements: ", res)
-    
-    duplicate_data = np.array([[0]*2]*len(res))
+    res = [*set(data)]
+    duplicate_data = np.zeros((len(res), 2), dtype=float)
     dd=0
     for index_i, ele_i in enumerate(res):
         dd = []
@@ -18,16 +15,12 @@ def get_most_occuerd_value(l):
                 dd.append(ele_i)
             else:
                 pass
-        print (ele_i,'occured', len(dd), 'times')
         duplicate_data[index_i][0] = ele_i
         duplicate_data[index_i][1] = len(dd)   
     
     sortedArr = duplicate_data[duplicate_data[:,1].argsort()]
-    print ('The most occued value is',sortedArr[-1,0], 'and occured', sortedArr[-1,1],'times')
-    return sortedArr[-1,0], sortedArr[-1,1]
-
-l = [1, 2, 4, 2, 1, 4, 5, 2]
-a,b=get_most_occuerd_value(l)
+    print ('The most occued number is',int(sortedArr[-1,0]), 'and occured', int(sortedArr[-1,1]),'times')
+    return int(sortedArr[-1,0])
 
 def getCallCost():
     df = readCSVfile('generated_sample.xlsx')
@@ -67,10 +60,22 @@ def getCallCost():
             callcost = callcost + rem_time*unitcost_type3
 
 
-        print(index,'Call start', starttime.time() ,'duration in minutes', duration, 'and the cost' , round(callcost,2))
+        # print(index,'Call start', starttime.time() ,'duration in minutes', duration, 'and the cost' , round(callcost,2))
         totalcost = totalcost + callcost
     print ('total cost ',round(totalcost,2))
     return (totalcost)
     
 getCallCost()
+
+df = readCSVfile('generated_sample.xlsx')
+l = list(df[0])
+freq_number = get_most_occuerd_value(list(df[0]))
+new_df = []
+for index, ele in enumerate(df.iterrows()):
+    if ele[1][0] == freq_number:
+        pass
+    else:
+        new_df.append(list(ele[1]))
+    
+        
 
