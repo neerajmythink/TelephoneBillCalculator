@@ -22,12 +22,11 @@ def get_most_occuerd_value(data):
     print ('The most occued number is',int(sortedArr[-1,0]), 'and occured', int(sortedArr[-1,1]),'times')
     return int(sortedArr[-1,0])
 
-def getCallCost():
-    df = readCSVfile('generated_sample.xlsx')
+def getCallCost(df):
+    
     unitcost_type1 = 1.0    # applied between 08:00:00 to 16:00:00
     unitcost_type2 = 0.5    # applied outside 08:00:00 to 16:00:00
-    unitcost_type3 = 0.2    # applied for extended minutes more than 5 min.
-    unitcost_type4 = 0.0    # applied for most frequent number  
+    unitcost_type3 = 0.2    # applied for extended minutes more than 5 min
     totalcost = 0
 
     for index, row in df.iterrows():
@@ -64,11 +63,10 @@ def getCallCost():
         totalcost = totalcost + callcost
     print ('total cost ',round(totalcost,2))
     return (totalcost)
-    
-getCallCost()
 
 df = readCSVfile('generated_sample.xlsx')
 l = list(df[0])
+import pandas as pd
 freq_number = get_most_occuerd_value(list(df[0]))
 new_df = []
 for index, ele in enumerate(df.iterrows()):
@@ -76,6 +74,9 @@ for index, ele in enumerate(df.iterrows()):
         pass
     else:
         new_df.append(list(ele[1]))
+
+new_df = pd.DataFrame(new_df)
+getCallCost(new_df)
     
         
 
